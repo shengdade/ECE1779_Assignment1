@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>uploadForm</title>
+</head>
+
+<body>
+<h1>uploadForm</h1>
+<form action="{{ url_for('image_transform') }}" enctype="multipart/form-data" method="post">
+
+    What is the image files to upload? <input type="file" name="image_file"><br/>
+
+    <input type="submit" value="Send">
+    <input type="reset">
+</form>
+
+</body>
+</html>
