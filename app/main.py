@@ -6,4 +6,4 @@ from app import webapp
 @webapp.route('/', methods=['GET'])
 # Return html with pointers to the examples
 def main():
-    return render_template("main.html")
+    return render_template("login.html")
