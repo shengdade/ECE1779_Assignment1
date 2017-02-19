@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 import mysql.connector
 from flask import g
@@ -33,6 +34,12 @@ def teardown_db(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
+
+
+@webapp.before_request
+def make_session_permanent():
+    session.permanent = True
+    webapp.permanent_session_lifetime = timedelta(minutes=5)
 
 
 @webapp.route('/', methods=['GET'])
