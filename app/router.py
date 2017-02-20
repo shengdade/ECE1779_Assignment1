@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 
+import boto3
 import mysql.connector
 from flask import g
 from flask import redirect, render_template, request, session, url_for, escape
@@ -49,8 +50,19 @@ def index():
     if 'username' not in session:
         return redirect(url_for('login'))
 
+    s3 = boto3.resource('s3')
+    s3_cli = boto3.client('s3')
+    username = str(session['username'])
+    bucket = s3.Bucket(username)
+    images = bucket.objects.all()
+    image_list = []
+    for image in images:
+        url = s3_cli.generate_presigned_url('get_object', Params={'Bucket': username, 'Key': image.key}, ExpiresIn=100)
+        image_list.append(url)
+        print url
+
     username_session = escape(session['username']).capitalize()
-    return render_template('main.html', user_name=username_session)
+    return render_template('main.html', user_name=username_session, image_list=image_list)
 
 
 @webapp.route('/login', methods=['GET', 'POST'])
