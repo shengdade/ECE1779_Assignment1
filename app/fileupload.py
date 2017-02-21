@@ -79,7 +79,7 @@ def file_upload():
 @webapp.route('/test/FileUpload/form', methods=['GET'])
 # Return file upload form
 def upload_form():
-    return render_template("fileupload/form.html")
+    return render_template("upload.html")
 
 
 @webapp.route('/test/FileUpload', methods=['POST'])
@@ -117,7 +117,7 @@ def test_file_upload():
             raise ServerError('Invalid password')
 
     except ServerError as e:
-        return render_template("fileupload/form.html", error=str(e))
+        return render_template("upload.html", error=str(e))
 
     s3 = boto3.client('s3')
     s3.create_bucket(Bucket=username_form)
@@ -163,4 +163,4 @@ def test_file_upload():
     cursor.execute(query, (user_id, key0, key1, key2, key3))
     cnx.commit()
 
-    return render_template("fileupload/form.html", error='upload successfully')
+    return render_template("upload.html", error='upload successfully')
