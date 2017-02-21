@@ -1,7 +1,11 @@
+import os
+
 import boto3
 from flask import render_template, request, session, redirect, url_for
+from wand.image import Image
 
 from app import webapp
+from utils import get_db
 
 
 @webapp.route('/test/FileUpload/form', methods=['GET'])
@@ -30,6 +34,49 @@ def file_upload():
     s3 = boto3.client('s3')
     username = str(session['username'])
     s3.create_bucket(Bucket=username)
-    s3.upload_fileobj(new_file, username, new_file.filename)
+
+    static_folder = 'app/static'
+    path0 = os.path.join(static_folder, 'tran0')
+    path1 = os.path.join(static_folder, 'tran1')
+    path2 = os.path.join(static_folder, 'tran2')
+    path3 = os.path.join(static_folder, 'tran3')
+    name = new_file.filename[:-4]
+    extn = new_file.filename[-4:]
+
+    new_file.save(path0)
+    img = Image(filename=path0)
+    trans1 = img.clone()
+    trans2 = img.clone()
+    trans3 = img.clone()
+    trans1.rotate(90)
+    trans2.rotate(180)
+    trans3.rotate(270)
+    trans1.save(filename=path1)
+    trans2.save(filename=path2)
+    trans3.save(filename=path3)
+    key0 = name + extn
+    key1 = name + '_1' + extn
+    key2 = name + '_2' + extn
+    key3 = name + '_3' + extn
+
+    with open(path0) as f:
+        s3.upload_fileobj(f, username, key0)
+    with open(path1) as f:
+        s3.upload_fileobj(f, username, key1)
+    with open(path2) as f:
+        s3.upload_fileobj(f, username, key2)
+    with open(path3) as f:
+        s3.upload_fileobj(f, username, key3)
+
+    cnx = get_db()
+    cursor = cnx.cursor()
+
+    query = '''SELECT id FROM users WHERE login = %s'''
+    cursor.execute(query, (username,))
+    user_id = cursor.fetchone()[0]
+
+    query = '''INSERT INTO images (userId,key1,key2,key3,key4) VALUES (%s,%s,%s,%s,%s)'''
+    cursor.execute(query, (user_id, key0, key1, key2, key3))
+    cnx.commit()
 
     return redirect(url_for('index'))

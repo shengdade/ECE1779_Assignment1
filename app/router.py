@@ -2,39 +2,17 @@ import os
 from datetime import timedelta
 
 import boto3
-import mysql.connector
-from flask import g
+from botocore.client import ClientError
 from flask import redirect, render_template, request, session, url_for, escape
 
 from app import webapp
-from app.config import db_config
+from utils import get_db
 
 webapp.secret_key = os.urandom(24)
 
 
 class ServerError(Exception):
     pass
-
-
-def connect_to_database():
-    return mysql.connector.connect(user=db_config['user'],
-                                   password=db_config['password'],
-                                   host=db_config['host'],
-                                   database=db_config['database'])
-
-
-def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = connect_to_database()
-    return db
-
-
-@webapp.teardown_appcontext
-def teardown_db(exception):
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
 
 
 @webapp.before_request
@@ -50,19 +28,22 @@ def index():
     if 'username' not in session:
         return redirect(url_for('login'))
 
-    s3 = boto3.resource('s3')
-    s3_cli = boto3.client('s3')
     username = str(session['username'])
-    bucket = s3.Bucket(username)
-    images = bucket.objects.all()
-    image_list = []
-    for image in images:
-        url = s3_cli.generate_presigned_url('get_object', Params={'Bucket': username, 'Key': image.key}, ExpiresIn=100)
-        image_list.append(url)
+    cnx = get_db()
+    cursor = cnx.cursor()
+
+    query = '''SELECT images.key1 FROM users, images WHERE users.id = images.userId AND users.login = %s'''
+    cursor.execute(query, (username,))
+
+    s3_cli = boto3.client('s3')
+    url_list = []
+    for key in cursor:
+        url = s3_cli.generate_presigned_url('get_object', Params={'Bucket': username, 'Key': key[0]}, ExpiresIn=10)
+        url_list.append(url)
         print url
 
     username_session = escape(session['username']).capitalize()
-    return render_template('main.html', user_name=username_session, image_list=image_list)
+    return render_template('main.html', user_name=username_session, image_list=url_list)
 
 
 @webapp.route('/login', methods=['GET', 'POST'])
@@ -105,12 +86,31 @@ def login():
 def register():
     username_form = request.form['username']
     password_form = request.form['password']
-    cnx = get_db()
-    cursor = cnx.cursor()
-    query = '''INSERT INTO users (login,password) VALUES (%s,%s)'''
-    cursor.execute(query, (username_form, password_form))
-    cnx.commit()
-    return redirect('/login')
+
+    error = None
+    try:
+        s3 = boto3.client('s3')
+        s3.create_bucket(Bucket=username_form)
+
+        cnx = get_db()
+        cursor = cnx.cursor()
+
+        query = "SELECT COUNT(*) FROM users WHERE login = %s"
+        cursor.execute(query, (username_form,))
+        if cursor.fetchone()[0]:
+            raise ServerError('Username already exists')
+
+        query = '''INSERT INTO users (login,password) VALUES (%s,%s)'''
+        cursor.execute(query, (username_form, password_form))
+        cnx.commit()
+
+    except ServerError as e:
+        error = str(e)
+
+    except ClientError as e:
+        error = str(e)
+
+    return render_template('login.html', error=error)
 
 
 @webapp.route('/logout')
