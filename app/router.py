@@ -6,13 +6,9 @@ from botocore.client import ClientError
 from flask import redirect, render_template, request, session, url_for, escape
 
 from app import webapp
-from utils import get_db
+from utils import get_db, ServerError
 
 webapp.secret_key = os.urandom(24)
-
-
-class ServerError(Exception):
-    pass
 
 
 @webapp.before_request
@@ -40,7 +36,6 @@ def index():
     for key in cursor:
         url = s3_cli.generate_presigned_url('get_object', Params={'Bucket': username, 'Key': key[0]}, ExpiresIn=10)
         url_list.append(url)
-        print url
 
     username_session = escape(session['username']).capitalize()
     return render_template('main.html', user_name=username_session, image_list=url_list)
