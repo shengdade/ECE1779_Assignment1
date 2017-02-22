@@ -8,7 +8,7 @@ from app import webapp
 from utils import get_db, ServerError
 
 
-@webapp.route('/FileUpload', methods=['POST'])
+@webapp.route('/upload', methods=['POST'])
 # Upload a new file and store in the systems temp directory
 def file_upload():
     # check if the post request has the file part

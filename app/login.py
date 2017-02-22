@@ -17,8 +17,8 @@ def make_session_permanent():
     webapp.permanent_session_lifetime = timedelta(minutes=5)
 
 
-@webapp.route('/', methods=['GET'])
 @webapp.route('/index', methods=['GET'])
+@webapp.route('/', methods=['GET'])
 # Return html with pointers to the examples
 def index():
     if 'username' not in session:

@@ -5,7 +5,7 @@ from app import webapp
 from utils import get_db, ServerError
 
 
-@webapp.route('/View', methods=['POST'])
+@webapp.route('/view', methods=['POST'])
 def image_view():
     key = str(request.form['key'])
     if key == "":
