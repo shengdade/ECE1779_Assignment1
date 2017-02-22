@@ -28,7 +28,7 @@
         <button class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#myModal">Upload Image</button>
         <ul class="nav navbar-nav navbar-right">
             <li><p class="navbar-text"><span class="glyphicon glyphicon-user"></span> {{ user_name }} </p></li>
-            <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-in"></span> Log out</a></li>
+            <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-in"></span>Log out</a></li>
         </ul>
     </div>
 </nav>
@@ -64,9 +64,10 @@
         {% for image in image_list %}
             <div class="col-md-3">
                 <div class="thumbnail" style="background:black">
-                    <a href="#">
-                        <img src="{{ image }}" style="width: 100%">
-                    </a>
+                    <form id="viewForm" action="{{ url_for('image_view') }}" method="post">
+                        <input type="hidden" name="key" value="{{ image }}">
+                        <input type="image" src="{{ image }}" style="width: 100%"/>
+                    </form>
                 </div>
             </div>
         {% endfor %}

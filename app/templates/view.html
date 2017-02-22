@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Case</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            background: black !important;
+            padding: 30px;
+        }
+
+        img {
+            max-height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ECE1779 A1</a>
+        </div>
+        <button class="btn btn-primary navbar-btn" onclick="window.history.back()">Back</button>
+        <ul class="nav navbar-nav navbar-right">
+            <li><p class="navbar-text"><span class="glyphicon glyphicon-user"></span> {{ user_name }} </p></li>
+            <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-in"></span>Log out</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+<div id='photos' class="container-fluid" style="margin-top:50px">
+    <div class="row">
+        {% for image in image_list %}
+            <div class="col-md-6">
+                <div class="thumbnail" style="background:black">
+                    <a href="#">
+                        <img src="{{ image }}" style="width: 100%">
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
