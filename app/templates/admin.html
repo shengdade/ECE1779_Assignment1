@@ -11,7 +11,7 @@
     <script type="text/javascript" src="{{ url_for('static', filename='flot/jquery.flot.js') }}"></script>
     <style type="text/css">
         body {
-            background: black !important;
+            background: antiquewhite !important;
             padding: 30px;
         }
     </style>
@@ -34,7 +34,31 @@
     <div class="row">
         <div class="col-md-3">
             <form action="{{ url_for('ec2_create') }}" method="post">
-                <input type="submit" value="New">
+                <div class="form-group">
+                    <label for="sel1">Number of worker to create:</label>
+                    <select class="form-control" id="sel1" name="num-new">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+                <input type="submit" class="btn btn-primary" value="Create">
+            </form>
+            <hr>
+            <form action="{{ url_for('ec2_destroy') }}" method="post">
+                <div class="form-group">
+                    <label for="sel2">Number of worker to destroy(randomly):</label>
+                    <select class="form-control" id="sel2" name="num-del">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+                <input type="submit" class="btn btn-warning" value="Destroy">
             </form>
         </div>
         <div class="col-md-9">
@@ -53,7 +77,7 @@
         }
     };
 
-    for (i = 0; i < {{ cpu_stats|length }}; i++) {
+    for (var i = 0; i < {{ cpu_stats|length }}; i++) {
         $.plot($("#cpu_plot" + i), [{{ cpu_stats }}[i]], options);
     }
 

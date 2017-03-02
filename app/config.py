@@ -5,5 +5,5 @@ db_config = {'user': 'ece1779',
 
 ami_id = 'ami-e3f432f5'
 instance_type = 't2.small'
-security_group = ['launch-wizard-1']
+security_group = ['a1-worker']
 key_name = 'ece1779'
