@@ -1,4 +1,5 @@
 import boto3
+from flask import redirect, url_for
 
 import config
 from app import webapp
@@ -12,7 +13,8 @@ def ec2_create():
     ec2.create_instances(ImageId=config.ami_id,
                          InstanceType=config.instance_type,
                          SecurityGroups=config.security_group,
+                         KeyName=config.key_name,
                          MinCount=1,
                          MaxCount=1)
 
-    return 'success'
+    return redirect(url_for('admin'))

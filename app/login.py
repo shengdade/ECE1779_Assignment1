@@ -56,6 +56,7 @@ def login():
             # handle admin login
             if username_form.strip() == 'admin':
                 if password_form == 'admin':
+                    session['username'] = 'admin'
                     return redirect(url_for('admin'))
                 else:
                     raise ServerError('Invalid password')
@@ -124,6 +125,9 @@ def logout():
 
 @webapp.route('/admin')
 def admin():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
     ec2 = boto3.resource('ec2')
     instances = ec2.instances.all()
     cpu_stats = []
