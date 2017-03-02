@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='flot/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='flot/jquery.flot.js') }}"></script>
+    <style type="text/css">
+        body {
+            background: black !important;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ECE1779 A1</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><p class="navbar-text"><span class="glyphicon glyphicon-user"></span> {{ user_name }} </p></li>
+            <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-in"></span>Log out</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid" style="margin-top:50px">
+    <div class="row">
+        <div class="col-md-3">
+            <form action="{{ url_for('ec2_create') }}" method="post">
+                <input type="submit" value="New">
+            </form>
+        </div>
+        <div class="col-md-9">
+            {% for i in range(cpu_stats|length) %}
+                <div id="cpu_plot{{ i }}" class="col-md-6" style="height:250px;"></div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+
+    var options = {
+        series: {
+            lines: {show: true},
+            points: {show: true}
+        }
+    };
+
+    for (i = 0; i < {{ cpu_stats|length }}; i++) {
+        $.plot($("#cpu_plot" + i), [{{ cpu_stats }}[i]], options);
+    }
+
+</script>
+</body>
+</html>

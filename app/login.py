@@ -6,7 +6,7 @@ from botocore.client import ClientError
 from flask import redirect, render_template, request, session, url_for, escape
 
 from app import webapp
-from utils import get_db, ServerError
+from utils import get_db, ServerError, get_cpu_stats
 
 webapp.secret_key = os.urandom(24)
 
@@ -50,19 +50,27 @@ def login():
     try:
         if request.method == 'POST':
 
+            username_form = request.form['username']
+            password_form = request.form['password']
+
+            # handle admin login
+            if username_form.strip() == 'admin':
+                if password_form == 'admin':
+                    return redirect(url_for('admin'))
+                else:
+                    raise ServerError('Invalid password')
+
             # connect to database
             cnx = get_db()
             cursor = cnx.cursor()
 
             # determine whether valid username
-            username_form = request.form['username']
             query = "SELECT COUNT(*) FROM users WHERE login = %s"
             cursor.execute(query, (username_form,))
             if not cursor.fetchone()[0]:
                 raise ServerError('Invalid username')
 
             # verify user password
-            password_form = request.form['password']
             query = "SELECT password FROM users WHERE login = %s"
             cursor.execute(query, (username_form,))
             if cursor.fetchone()[0] == password_form:
@@ -112,3 +120,13 @@ def register():
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
+
+
+@webapp.route('/admin')
+def admin():
+    ec2 = boto3.resource('ec2')
+    instances = ec2.instances.all()
+    cpu_stats = []
+    for instance in instances:
+        cpu_stats.append(get_cpu_stats(instance.id))
+    return render_template('admin.html', user_name='Admin', cpu_stats=cpu_stats)
