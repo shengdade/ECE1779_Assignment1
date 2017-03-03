@@ -5,6 +5,7 @@ import boto3
 from botocore.client import ClientError
 from flask import redirect, render_template, request, session, url_for, escape
 
+import config
 from app import webapp
 from utils import get_db, ServerError, get_cpu_stats
 
@@ -31,7 +32,7 @@ def index():
     query = '''SELECT images.key1 FROM users, images WHERE users.id = images.userId AND users.login = %s'''
     cursor.execute(query, (username,))
 
-    s3_cli = boto3.client('s3')
+    s3_cli = boto3.client('s3', **config.conn_args)
     url_list = []
     for key in cursor:
         url = s3_cli.generate_presigned_url('get_object', Params={'Bucket': username, 'Key': key[0]}, ExpiresIn=10)
@@ -93,7 +94,7 @@ def register():
 
     error = None
     try:
-        s3 = boto3.client('s3')
+        s3 = boto3.client('s3', **config.conn_args)
         s3.create_bucket(Bucket=username_form)
 
         cnx = get_db()
@@ -128,7 +129,7 @@ def admin():
     if 'username' not in session:
         return redirect(url_for('login'))
 
-    ec2 = boto3.resource('ec2')
+    ec2 = boto3.resource('ec2', **config.conn_args)
     # instances = ec2.instances.filter(
     #     Filters=[{'Name': 'instance-state-name', 'Values': ['running']}])
     instances = ec2.instances.filter(

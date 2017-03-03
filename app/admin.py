@@ -6,6 +6,7 @@ from flask import redirect, url_for, request
 import config
 from app import webapp
 
+
 # ARN = 'arn:aws:elasticloadbalancing:us-east-1:554376045366:targetgroup/a1-worker-group/e254bac50246fab2'
 
 
@@ -13,7 +14,7 @@ from app import webapp
 def ec2_create():
     num_create = int(request.form.get('num-new'))
     ec2 = boto3.resource('ec2', **config.conn_args)
-    elb = boto3.client('elbv2')
+    elb = boto3.client('elbv2', **config.conn_args)
     instances = ec2.create_instances(ImageId=config.ami_id,
                                      InstanceType=config.instance_type,
                                      SecurityGroups=config.security_group,
@@ -36,7 +37,7 @@ def ec2_create():
 @webapp.route('/admin/destroy', methods=['POST'])
 def ec2_destroy():
     num_destroy = int(request.form.get('num-del'))
-    ec2 = boto3.resource('ec2')
+    ec2 = boto3.resource('ec2', **config.conn_args)
     workers = list(ec2.instances.filter(
         Filters=[{'Name': 'tag-value', 'Values': ['a1-worker']},
                  {'Name': 'instance-state-name', 'Values': ['running', 'pending']}]))

@@ -7,6 +7,7 @@ from flask import g
 
 from app import webapp
 from app.config import db_config
+import config
 
 
 def connect_to_database():
@@ -35,7 +36,7 @@ class ServerError(Exception):
 
 
 def get_cpu_stats(instance_id):
-    client = boto3.client('cloudwatch')
+    client = boto3.client('cloudwatch', **config.conn_args)
 
     metric_name = 'CPUUtilization'
 

@@ -2,6 +2,7 @@ import boto3
 from flask import render_template, request, session, redirect, url_for, escape
 
 from app import webapp
+import config
 from utils import get_db, ServerError
 
 
@@ -32,7 +33,7 @@ def image_view():
         print 'Invalid image key'
         return redirect(url_for('index'))
 
-    s3_cli = boto3.client('s3')
+    s3_cli = boto3.client('s3', **config.conn_args)
     url_list = []
     for key in row:
         url = s3_cli.generate_presigned_url('get_object', Params={'Bucket': username, 'Key': key}, ExpiresIn=10)

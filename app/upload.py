@@ -6,6 +6,7 @@ from wand.image import Image
 
 from app import webapp
 from utils import get_db, ServerError
+import config
 
 
 @webapp.route('/upload', methods=['POST'])
@@ -25,7 +26,7 @@ def file_upload():
     if 'username' not in session:
         return redirect(url_for('login'))
 
-    s3 = boto3.client('s3')
+    s3 = boto3.client('s3', **config.conn_args)
     username = str(session['username'])
     s3.create_bucket(Bucket=username)
 
@@ -119,7 +120,7 @@ def test_file_upload():
     except ServerError as e:
         return render_template("upload.html", error=str(e))
 
-    s3 = boto3.client('s3')
+    s3 = boto3.client('s3', **config.conn_args)
     s3.create_bucket(Bucket=username_form)
 
     static_folder = 'app/static'
