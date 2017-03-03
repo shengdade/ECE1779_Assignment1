@@ -18,7 +18,6 @@ conn_args = {
 userdata = """#cloud-config
 
 runcmd:
- - cd
  - git clone https://github.com/shengdade/ECE1779_Assignment1.git
  - cd ECE1779_Assignment1
  - yes | pip install gunicorn
