@@ -18,7 +18,7 @@ conn_args = {
 userdata = """#cloud-config
 
 runcmd:
- - git clone https://github.com/shengdade/ECE1779_Assignment1.git
+ - git clone https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
  - cd ECE1779_Assignment1
  - yes | pip install gunicorn
  - yes | pip install flask
