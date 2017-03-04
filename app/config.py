@@ -8,16 +8,25 @@ instance_type = 't2.small'
 security_group = ['a1-worker']
 key_name = 'ece1779'
 
+# for assignment 1
 conn_args = {
     'aws_access_key_id': 'AKIAJ3J2T2OKN4H6HDCA',
     'aws_secret_access_key': '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',
     'region_name': 'us-east-1'
 }
 
+# for dade ec2
+# conn_args = {
+#     'aws_access_key_id': 'AKIAIL4GGZP6HRGUBRUA',
+#     'aws_secret_access_key': '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',
+#     'region_name': 'us-east-1'
+# }
+
 # define userdata to be run at instance launch
 userdata = """#cloud-config
 
 runcmd:
+ - cd /home/ubuntu
  - git clone https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
  - cd ECE1779_Assignment1
  - yes | pip install gunicorn
