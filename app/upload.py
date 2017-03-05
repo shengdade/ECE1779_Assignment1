@@ -4,9 +4,9 @@ import boto3
 from flask import render_template, request, session, redirect, url_for
 from wand.image import Image
 
-from app import webapp
-from utils import get_db, ServerError
 import config
+from app import webapp, celery
+from utils import get_db, ServerError
 
 
 @webapp.route('/upload', methods=['POST'])
@@ -32,36 +32,19 @@ def file_upload():
 
     static_folder = 'app/static'
     path0 = os.path.join(static_folder, 'tran0')
-    path1 = os.path.join(static_folder, 'tran1')
-    path2 = os.path.join(static_folder, 'tran2')
-    path3 = os.path.join(static_folder, 'tran3')
+    new_file.save(path0)
+
     name = new_file.filename[:-4]
     extn = new_file.filename[-4:]
-
-    new_file.save(path0)
-    img = Image(filename=path0)
-    trans1 = img.clone()
-    trans2 = img.clone()
-    trans3 = img.clone()
-    trans1.rotate(180)
-    trans2.rotate(90)
-    trans3.rotate(270)
-    trans1.save(filename=path1)
-    trans2.save(filename=path2)
-    trans3.save(filename=path3)
     key0 = name + extn
     key1 = name + '_1' + extn
     key2 = name + '_2' + extn
     key3 = name + '_3' + extn
 
+    upload_transformations.delay(username, path0, static_folder, key1, key2, key3)
+
     with open(path0) as f:
         s3.upload_fileobj(f, username, key0)
-    with open(path1) as f:
-        s3.upload_fileobj(f, username, key1)
-    with open(path2) as f:
-        s3.upload_fileobj(f, username, key2)
-    with open(path3) as f:
-        s3.upload_fileobj(f, username, key3)
 
     cnx = get_db()
     cursor = cnx.cursor()
@@ -75,6 +58,36 @@ def file_upload():
     cnx.commit()
 
     return redirect(url_for('index'))
+
+
+@celery.task
+def upload_transformations(username, path0, static_folder, key1, key2, key3):
+    print 'begin celery upload task'
+    s3 = boto3.client('s3', **config.conn_args)
+
+    path1 = os.path.join(static_folder, 'tran1')
+    path2 = os.path.join(static_folder, 'tran2')
+    path3 = os.path.join(static_folder, 'tran3')
+
+    img = Image(filename=path0)
+    trans1 = img.clone()
+    trans2 = img.clone()
+    trans3 = img.clone()
+    trans1.rotate(180)
+    trans2.rotate(90)
+    trans3.rotate(270)
+    trans1.save(filename=path1)
+    trans2.save(filename=path2)
+    trans3.save(filename=path3)
+
+    with open(path1) as f:
+        s3.upload_fileobj(f, username, key1)
+    with open(path2) as f:
+        s3.upload_fileobj(f, username, key2)
+    with open(path3) as f:
+        s3.upload_fileobj(f, username, key3)
+
+    print 'celery upload task done'
 
 
 @webapp.route('/test/FileUpload/form', methods=['GET'])
@@ -121,43 +134,30 @@ def test_file_upload():
         return render_template("upload.html", error=str(e))
 
     s3 = boto3.client('s3', **config.conn_args)
-    s3.create_bucket(Bucket=username_form)
+    username = username_form
+    s3.create_bucket(Bucket=username)
 
     static_folder = 'app/static'
     path0 = os.path.join(static_folder, 'tran0')
-    path1 = os.path.join(static_folder, 'tran1')
-    path2 = os.path.join(static_folder, 'tran2')
-    path3 = os.path.join(static_folder, 'tran3')
+    new_file.save(path0)
+
     name = new_file.filename[:-4]
     extn = new_file.filename[-4:]
-
-    new_file.save(path0)
-    img = Image(filename=path0)
-    trans1 = img.clone()
-    trans2 = img.clone()
-    trans3 = img.clone()
-    trans1.rotate(180)
-    trans2.rotate(90)
-    trans3.rotate(270)
-    trans1.save(filename=path1)
-    trans2.save(filename=path2)
-    trans3.save(filename=path3)
     key0 = name + extn
     key1 = name + '_1' + extn
     key2 = name + '_2' + extn
     key3 = name + '_3' + extn
 
+    upload_transformations.delay(username, path0, static_folder, key1, key2, key3)
+
     with open(path0) as f:
-        s3.upload_fileobj(f, username_form, key0)
-    with open(path1) as f:
-        s3.upload_fileobj(f, username_form, key1)
-    with open(path2) as f:
-        s3.upload_fileobj(f, username_form, key2)
-    with open(path3) as f:
-        s3.upload_fileobj(f, username_form, key3)
+        s3.upload_fileobj(f, username, key0)
+
+    cnx = get_db()
+    cursor = cnx.cursor()
 
     query = '''SELECT id FROM users WHERE login = %s'''
-    cursor.execute(query, (username_form,))
+    cursor.execute(query, (username,))
     user_id = cursor.fetchone()[0]
 
     query = '''INSERT INTO images (userId,key1,key2,key3,key4) VALUES (%s,%s,%s,%s,%s)'''
