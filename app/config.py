@@ -47,11 +47,13 @@ runcmd:
  - redis-server --daemonize yes
  - yes | apt-get install supervisor
  - cp celery.conf  /etc/supervisor/conf.d
+ - cp gunicorn.conf /etc/supervisor/conf.d
  - supervisord
- - ./run.sh &
 """
 
 # - ./install_redis.sh
 # - redis-stable/src/redis-server --daemonize yes
 # - mysql --user=ece1779 --password=secret < ece1779_a1.sql
+# - ./run.sh &
+
 # /var/log/cloud-init-output.log
