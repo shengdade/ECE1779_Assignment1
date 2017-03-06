@@ -34,6 +34,8 @@ userdata = """#cloud-config
 runcmd:
  - locale-gen en_CA.UTF-8
  - apt-get update
+ - fuser -cuk /var/lib/dpkg/lock
+ - rm -f /var/lib/dpkg/lock
  - yes | apt-get install redis-server
  - yes | apt-get install supervisor
  - cd /home/ubuntu
