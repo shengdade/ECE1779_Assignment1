@@ -32,10 +32,10 @@ conn_args = {
 userdata = """#cloud-config
 
 runcmd:
+ - locale-gen en_CA.UTF-8
  - cd /home/ubuntu
  - git clone https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
  - cd ECE1779_Assignment1
- - export LC_ALL=C
  - apt-get update
  - pip install --upgrade pip
  - yes | pip install gunicorn
@@ -43,13 +43,15 @@ runcmd:
  - yes | pip install boto3
  - yes | pip install celery
  - yes | pip install redis
- - apt install redis-server
+ - yes | apt install redis-server
  - redis-server --daemonize yes
- - celery worker -A app -l info
- - mysql --user=ece1779 --password=secret < ece1779_a1.sql
- - ./run.sh
+ - yes | apt-get install supervisor
+ - cp celery.conf  /etc/supervisor/conf.d
+ - supervisord
+ - ./run.sh &
 """
 
 # - ./install_redis.sh
 # - redis-stable/src/redis-server --daemonize yes
+# - mysql --user=ece1779 --password=secret < ece1779_a1.sql
 # /var/log/cloud-init-output.log
