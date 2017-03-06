@@ -55,6 +55,7 @@ runcmd:
  - /home/ubuntu/ECE1779_Assignment1
  - cp celery.conf  /etc/supervisor/conf.d
  - supervisord
+ - ./run.sh
 """
 
 # - ./install_redis.sh
