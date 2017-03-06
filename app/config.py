@@ -36,16 +36,16 @@ runcmd:
  - cd /home/ubuntu
  - git clone https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
  - cd ECE1779_Assignment1
- - apt-get update
  - pip install --upgrade pip
  - yes | pip install gunicorn
  - yes | pip install flask
  - yes | pip install boto3
  - yes | pip install celery
  - yes | pip install redis
- - yes | apt install redis-server
- - redis-server --daemonize yes
+ - yes | apt-get install redis-server
  - yes | apt-get install supervisor
+ - redis-server --daemonize yes
+ - /home/ubuntu/ECE1779_Assignment1
  - cp celery.conf  /etc/supervisor/conf.d
  - cp gunicorn.conf /etc/supervisor/conf.d
  - supervisord
