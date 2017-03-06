@@ -35,13 +35,14 @@ runcmd:
  - cd /home/ubuntu
  - git clone https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
  - cd ECE1779_Assignment1
+ - export LC_ALL=C
  - apt-get update
  - pip install --upgrade pip
  - yes | pip install gunicorn
  - yes | pip install flask
  - yes | pip install boto3
  - yes | pip install celery
- - ./install_redis
+ - ./install_redis.sh
  - redis-stable/src/redis-server --daemonize yes
  - pip install redis
  - celery worker -A app -l info
