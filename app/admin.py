@@ -16,14 +16,14 @@ def ec2_create():
                                      InstanceType=config.instance_type,
                                      SecurityGroups=config.security_group,
                                      KeyName=config.key_name,
-                                     #UserData=config.userdata,
+                                     UserData=config.userdata,
                                      MinCount=1,
                                      MaxCount=num_create)
     id_list = []
     id_port_list = []
     for ins in instances:
         id_list.append(ins.id)
-        id_port_list.append({'Id': ins.id, 'Port': 80})
+        id_port_list.append({'Id': ins.id, 'Port': 8080})
 
     ec2.create_tags(Resources=id_list, Tags=[{'Key': 'Name', 'Value': 'a1-worker'}])
     register_instance.apply_async(args=[id_list, id_port_list], countdown=60)
