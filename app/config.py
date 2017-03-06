@@ -33,6 +33,9 @@ userdata = """#cloud-config
 
 runcmd:
  - locale-gen en_CA.UTF-8
+ - apt-get update
+ - yes | apt-get install redis-server
+ - yes | apt-get install supervisor
  - cd /home/ubuntu
  - git clone https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
  - cd ECE1779_Assignment1
@@ -42,9 +45,6 @@ runcmd:
  - yes | pip install boto3
  - yes | pip install celery
  - yes | pip install redis
- - rm /var/lib/dpkg/lock
- - yes | apt install redis-server
- - yes | apt install supervisor
  - redis-server --daemonize yes
  - /home/ubuntu/ECE1779_Assignment1
  - cp celery.conf  /etc/supervisor/conf.d
