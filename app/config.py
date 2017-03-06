@@ -54,7 +54,6 @@ runcmd:
  - redis-server --daemonize yes
  - /home/ubuntu/ECE1779_Assignment1
  - cp celery.conf  /etc/supervisor/conf.d
- - cp gunicorn.conf /etc/supervisor/conf.d
  - supervisord
 """
 
