@@ -32,16 +32,17 @@ conn_args = {
 userdata = """#cloud-config
 
 runcmd:
- - locale-gen en_CA.UTF-8
- - echo "locale-gen installed" - `date` > ins-logs
- - apt-get update
- - echo "apt-get update installed" - `date` > ins-logs
- - apt-get -y install redis-server
- - echo "redis-server installed" - `date` > ins-logs
- - apt-get -y install supervisor
- - echo "supervisor installed" - `date` > ins-logs
  - cd /home/ubuntu
+ - locale-gen en_CA.UTF-8
+ - echo "locale-gen installed" - `date` >> ins-logs
+ - apt-get update
+ - echo "apt-get updated" - `date` >> ins-logs
+ - apt-get -y install redis-server
+ - echo "redis-server installed" - `date` >> ins-logs
+ - apt-get -y install supervisor
+ - echo "supervisor installed" - `date` >> ins-logs
  - git clone https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
+ - echo "repository cloned" - `date` >> ins-logs
  - cd ECE1779_Assignment1
  - pip install --upgrade pip
  - yes | pip install gunicorn
@@ -50,10 +51,13 @@ runcmd:
  - yes | pip install celery
  - yes | pip install redis
  - redis-server --daemonize yes
+ - echo "redis-server running" - `date` >> ins-logs
  - /home/ubuntu/ECE1779_Assignment1
  - cp celery.conf  /etc/supervisor/conf.d
  - supervisord
+ - echo "supervisord running" - `date` >> ins-logs
  - ./run.sh
+ - echo "app running" - `date` >> ins-logs
 """
 
 # - ./install_redis.sh
