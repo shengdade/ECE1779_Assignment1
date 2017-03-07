@@ -31,16 +31,16 @@ conn_args = {
 # define userdata to be run at instance launch
 userdata = """#cloud-config
 
+packages:
+ - supervisor
+ - redis-server
+
 runcmd:
  - cd /home/ubuntu
  - locale-gen en_CA.UTF-8
  - echo "1. locale-gen installed" - `date` >> ins-logs
  - apt-get update
  - echo "2. apt-get updated" - `date` >> ins-logs
- - apt -y install redis-server
- - echo "3. redis-server installed" - `date` >> ins-logs
- - apt -y install supervisor
- - echo "4. supervisor installed" - `date` >> ins-logs
  - git clone https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
  - echo "5. repository cloned" - `date` >> ins-logs
  - cd ECE1779_Assignment1
@@ -66,3 +66,8 @@ runcmd:
 # - ./run.sh &
 
 # /var/log/cloud-init-output.log
+
+#  - apt -y install redis-server
+#  - echo "3. redis-server installed" - `date` >> ins-logs
+#  - apt -y install supervisor
+#  - echo "4. supervisor installed" - `date` >> ins-logs
