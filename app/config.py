@@ -37,10 +37,6 @@ runcmd:
  - echo "locale-gen installed" - `date` >> ins-logs
  - apt-get update
  - echo "apt-get updated" - `date` >> ins-logs
- - apt-get -y install redis-server
- - echo "redis-server installed" - `date` >> ins-logs
- - apt-get -y install supervisor
- - echo "supervisor installed" - `date` >> ins-logs
  - git clone https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
  - echo "repository cloned" - `date` >> ins-logs
  - cd ECE1779_Assignment1
@@ -50,6 +46,10 @@ runcmd:
  - yes | pip install boto3
  - yes | pip install celery
  - yes | pip install redis
+ - apt -y install redis-server
+ - echo "redis-server installed" - `date` >> ins-logs
+ - apt -y install supervisor
+ - echo "supervisor installed" - `date` >> ins-logs
  - redis-server --daemonize yes
  - echo "redis-server running" - `date` >> ins-logs
  - /home/ubuntu/ECE1779_Assignment1
