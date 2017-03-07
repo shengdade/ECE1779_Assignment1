@@ -45,7 +45,10 @@ def index():
 @webapp.route('/login', methods=['GET', 'POST'])
 def login():
     if 'username' in session:
-        return redirect(url_for('index'))
+        if session['username'] == 'admin':
+            return redirect(url_for('admin'))
+        else:
+            return redirect(url_for('index'))
 
     error = None
     try:
