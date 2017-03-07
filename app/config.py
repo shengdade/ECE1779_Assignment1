@@ -39,8 +39,6 @@ runcmd:
  - cd /home/ubuntu
  - locale-gen en_CA.UTF-8
  - echo "1. locale-gen installed" - `date` >> ins-logs
- - apt-get update
- - echo "2. apt-get updated" - `date` >> ins-logs
  - git clone https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
  - echo "5. repository cloned" - `date` >> ins-logs
  - cd ECE1779_Assignment1
@@ -67,6 +65,8 @@ runcmd:
 
 # /var/log/cloud-init-output.log
 
+#  - apt-get update
+#  - echo "2. apt-get updated" - `date` >> ins-logs
 #  - apt -y install redis-server
 #  - echo "3. redis-server installed" - `date` >> ins-logs
 #  - apt -y install supervisor
