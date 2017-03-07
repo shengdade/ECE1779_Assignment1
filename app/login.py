@@ -1,4 +1,3 @@
-import os
 from datetime import timedelta
 
 import boto3
@@ -9,7 +8,7 @@ import config
 from app import webapp
 from utils import get_db, ServerError, get_cpu_stats
 
-webapp.secret_key = os.urandom(24)
+webapp.secret_key = '\x8e\xfa\xbf\xff\x07A&\x84\xec\xc1\xad+c=\xd3:hC\x98*\xc4\xcc8\xcd'
 
 
 @webapp.before_request
