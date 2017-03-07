@@ -16,7 +16,7 @@ def ec2_create():
                                      InstanceType=config.instance_type,
                                      SecurityGroups=config.security_group,
                                      KeyName=config.key_name,
-                                     UserData=config.userdata,
+                                     # UserData=config.userdata,
                                      MinCount=1,
                                      MaxCount=num_create)
     id_list = []
