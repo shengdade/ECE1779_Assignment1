@@ -33,15 +33,13 @@ userdata = """#cloud-config
 
 runcmd:
  - locale-gen en_CA.UTF-8
- - echo "locale-gen en_CA.UTF-8 ====================================================================="
+ - echo "locale-gen installed" - `date` > ins-logs
  - apt-get update
- - echo "apt-get update ====================================================================="
- - fuser -cuk /var/lib/dpkg/lock
- - rm -f /var/lib/dpkg/lock
- - yes | apt-get install redis-server
- - echo "yes | apt-get install redis-server ====================================================================="
- - yes | apt-get install supervisor
- - echo "yes | apt-get install supervisor ====================================================================="
+ - echo "apt-get update installed" - `date` > ins-logs
+ - apt-get -y install redis-server
+ - echo "redis-server installed" - `date` > ins-logs
+ - apt-get -y install supervisor
+ - echo "supervisor installed" - `date` > ins-logs
  - cd /home/ubuntu
  - git clone https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
  - cd ECE1779_Assignment1
