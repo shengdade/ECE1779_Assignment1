@@ -23,7 +23,7 @@ def ec2_create():
     id_port_list = []
     for ins in instances:
         id_list.append(ins.id)
-        id_port_list.append({'Id': ins.id, 'Port': 8080})
+        id_port_list.append({'Id': ins.id, 'Port': 80})
 
     ec2.create_tags(Resources=id_list, Tags=[{'Key': 'Name', 'Value': 'a1-worker'}])
     register_instance.apply_async(args=[id_list, id_port_list], countdown=60)
