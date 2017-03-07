@@ -21,6 +21,7 @@ userdata = """#cloud-config
 
 runcmd:
  - cd /home/ubuntu/ECE1779_Assignment1
+ - git pull https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
  - pip install --upgrade pip
  - pip install boto3
  - supervisord
