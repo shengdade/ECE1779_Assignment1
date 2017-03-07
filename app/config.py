@@ -21,6 +21,8 @@ userdata = """#cloud-config
 
 runcmd:
  - cd /home/ubuntu/ECE1779_Assignment1
+ - pip install --upgrade pip
+ - pip install boto3
  - supervisord
  - echo "1. supervisord running" - `date` >> init-log
  - ./run.sh &
