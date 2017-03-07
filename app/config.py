@@ -3,7 +3,7 @@ db_config = {'user': 'ece1779',
              'host': '54.209.253.37',
              'database': 'ece1779_a1'}
 
-ami_id = 'ami-9765c381'
+ami_id = 'ami-7478de62'
 instance_type = 't2.small'
 security_group = ['a1-worker']
 key_name = 'ece1779'
@@ -22,8 +22,6 @@ userdata = """#cloud-config
 runcmd:
  - cd /home/ubuntu/ECE1779_Assignment1
  - git pull https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
- - pip install --upgrade pip
- - pip install boto3
  - supervisord
  - echo "1. supervisord running" - `date` >> init-log
  - ./run.sh &
