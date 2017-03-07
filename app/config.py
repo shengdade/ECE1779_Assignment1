@@ -37,8 +37,12 @@ runcmd:
  - echo "1. locale-gen installed" - `date` >> ins-logs
  - apt-get update
  - echo "2. apt-get updated" - `date` >> ins-logs
+ - apt -y install redis-server
+ - echo "3. redis-server installed" - `date` >> ins-logs
+ - apt -y install supervisor
+ - echo "4. supervisor installed" - `date` >> ins-logs
  - git clone https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
- - echo "3. repository cloned" - `date` >> ins-logs
+ - echo "5. repository cloned" - `date` >> ins-logs
  - cd ECE1779_Assignment1
  - pip install --upgrade pip
  - yes | pip install gunicorn
@@ -46,11 +50,7 @@ runcmd:
  - yes | pip install boto3
  - yes | pip install celery
  - yes | pip install redis
- - apt -y install redis-server
- - echo "4. redis-server installed" - `date` >> ins-logs
- - apt -y install supervisor
- - echo "5. supervisor installed" - `date` >> ins-logs
- - redis-server --daemonize yes
+ - /usr/bin/redis-server --daemonize yes
  - echo "6. redis-server running" - `date` >> ins-logs
  - /home/ubuntu/ECE1779_Assignment1
  - cp celery.conf  /etc/supervisor/conf.d
