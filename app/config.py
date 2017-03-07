@@ -3,7 +3,7 @@ db_config = {'user': 'ece1779',
              'host': '54.209.253.37',
              'database': 'ece1779_a1'}
 
-ami_id = 'ami-909a3c86'
+ami_id = 'ami-9765c381'
 instance_type = 't2.small'
 security_group = ['a1-worker']
 key_name = 'ece1779'
@@ -17,6 +17,16 @@ conn_args = {
 }
 
 # define userdata to be run at instance launch
+userdata = """#cloud-config
+
+runcmd:
+ - cd /home/ubuntu/ECE1779_Assignment1
+ - supervisord
+ - echo "1. supervisord running" - `date` >> init-log
+ - ./run.sh &
+ - echo "2. app running" - `date` >> init-log
+"""
+
 # userdata = """#cloud-config
 
 # runcmd:
