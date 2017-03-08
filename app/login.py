@@ -134,6 +134,9 @@ def admin():
     if 'username' not in session:
         return redirect(url_for('login'))
 
+    if session['username'] != 'admin':
+        return 'Please log out and then log in with admin'
+
     ec2 = boto3.resource('ec2', **config.conn_args)
     # instances = ec2.instances.filter(
     #     Filters=[{'Name': 'instance-state-name', 'Values': ['running']}])
