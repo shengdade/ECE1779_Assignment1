@@ -24,21 +24,24 @@ def index():
     if 'username' not in session:
         return redirect(url_for('login'))
 
-    username = str(session['username'])
-    cnx = get_db()
-    cursor = cnx.cursor()
+    if session['username'] == 'admin':
+        return redirect(url_for('admin'))
+    else:
+        username = str(session['username'])
+        cnx = get_db()
+        cursor = cnx.cursor()
 
-    query = '''SELECT images.key1 FROM users, images WHERE users.id = images.userId AND users.login = %s'''
-    cursor.execute(query, (username,))
+        query = '''SELECT images.key1 FROM users, images WHERE users.id = images.userId AND users.login = %s'''
+        cursor.execute(query, (username,))
 
-    s3_cli = boto3.client('s3', **config.conn_args)
-    url_list = []
-    for key in cursor:
-        url = s3_cli.generate_presigned_url('get_object', Params={'Bucket': username, 'Key': key[0]}, ExpiresIn=10)
-        url_list.append(url)
+        s3_cli = boto3.client('s3', **config.conn_args)
+        url_list = []
+        for key in cursor:
+            url = s3_cli.generate_presigned_url('get_object', Params={'Bucket': username, 'Key': key[0]}, ExpiresIn=10)
+            url_list.append(url)
 
-    username_session = escape(session['username']).capitalize()
-    return render_template('main.html', user_name=username_session, image_list=url_list)
+        username_session = escape(session['username']).capitalize()
+        return render_template('main.html', user_name=username_session, image_list=url_list)
 
 
 @webapp.route('/login', methods=['GET', 'POST'])
