@@ -33,33 +33,48 @@
 <div class="container-fluid" style="margin-top:50px">
     <div class="row">
         <div class="col-md-3">
-            <form action="{{ url_for('ec2_create') }}" method="post">
-                <div class="form-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="radio">
+                        <label><input type="radio" name="manual">Manually setting worker pool</label>
+                    </div>
+                </div>
+                <div class="panel-body">
                     <label for="sel1">Number of worker to create:</label>
-                    <select class="form-control" id="sel1" name="num-new">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-                <input type="submit" class="btn btn-primary" value="Create">
-            </form>
-            <hr>
-            <form action="{{ url_for('ec2_destroy') }}" method="post">
-                <div class="form-group">
+                    <form class="form-inline" role="form" action="{{ url_for('ec2_create') }}" method="post">
+                        <div class="form-group">
+                            <select class="form-control" id="sel1" name="num-new"
+                                    style="width: 200px;margin-right: 5px">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Create">
+                        </div>
+                    </form>
+                    <hr>
                     <label for="sel2">Number of worker to destroy(randomly):</label>
-                    <select class="form-control" id="sel2" name="num-del">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
+                    <form class="form-inline" role="form" action="{{ url_for('ec2_destroy') }}" method="post">
+                        <div class="form-group">
+                            <select class="form-control" id="sel2" name="num-del"
+                                    style="width: 200px;margin-right: 5px">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-warning" value="Destroy">
+                        </div>
+                    </form>
                 </div>
-                <input type="submit" class="btn btn-warning" value="Destroy">
-            </form>
+            </div>
         </div>
         <div class="col-md-9">
             {% for i in range(cpu_stats|length) %}
