@@ -75,6 +75,59 @@
                     </form>
                 </div>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="radio">
+                        <label><input type="radio" name="manual">Auto-scaling the worker pool</label>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="auto1">CPU threshold for growing worker pool:</label>
+                            <select class="form-control" id="auto1" name="cpu-grow">
+                                <option>90%</option>
+                                <option>80%</option>
+                                <option>70%</option>
+                                <option>60%</option>
+                                <option>50%</option>
+                            </select>
+                        </div>
+                    </form>
+                    <form class="form-inline" style="margin-top: 5px">
+                        <div class="form-group">
+                            <label for="auto2">CPU threshold for shrinking worker pool:</label>
+                            <select class="form-control" id="auto2" name="cpu-shrink">
+                                <option>10%</option>
+                                <option>20%</option>
+                                <option>30%</option>
+                                <option>40%</option>
+                                <option>50%</option>
+                            </select>
+                        </div>
+                    </form>
+                    <form class="form-inline" style="margin-top: 5px">
+                        <div class="form-group">
+                            <label for="auto3">Ratio by which to expand the worker pool:</label>
+                            <select class="form-control" id="auto3" name="ratio-expand">
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                    </form>
+                    <form class="form-inline" style="margin-top: 5px">
+                        <div class="form-group">
+                            <label for="auto4">Ratio by which to shrink the worker pool:</label>
+                            <select class="form-control" id="auto4" name="ratio-shrink">
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
         <div class="col-md-9">
             {% for i in range(cpu_stats|length) %}
