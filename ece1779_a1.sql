@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `ece1779_a1`.`images` (
 DROP TABLE IF EXISTS `ece1779_a1`.`setting`;
 
 CREATE TABLE IF NOT EXISTS `ece1779_a1`.`setting` (
+  `autoScaling` INT NOT NULL,
   `cpuGrow`     INT NOT NULL,
   `cpuShrink`   INT NOT NULL,
   `ratioExpand` INT NOT NULL,
@@ -66,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `ece1779_a1`.`setting` (
 )
   ENGINE = InnoDB;
 
-INSERT INTO setting (cpuGrow, cpuShrink, ratioExpand, ratioShrink) VALUES (90, 10, 2, 2);
+INSERT INTO setting (autoScaling, cpuGrow, cpuShrink, ratioExpand, ratioShrink) VALUES (0, 90, 10, 2, 2);
 
 
 SET SQL_MODE = @OLD_SQL_MODE;
