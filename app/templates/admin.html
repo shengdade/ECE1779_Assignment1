@@ -55,7 +55,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <input type="submit" class="btn btn-primary" value="Create">
+                            <input id="createWorker" type="submit" class="btn btn-primary" value="Create">
                         </div>
                     </form>
                     <hr>
@@ -72,7 +72,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <input type="submit" class="btn btn-warning" value="Destroy">
+                            <input id="destroyWorker" type="submit" class="btn btn-warning" value="Destroy">
                         </div>
                     </form>
                 </div>
@@ -87,7 +87,7 @@
                     <form class="form-inline">
                         <div class="form-group">
                             <label for="auto1">CPU threshold for growing worker pool:</label>
-                            <select class="form-control" id="auto1" name="cpu-grow">
+                            <select class="form-control" id="auto1" name="cpu-grow" disabled>
                                 <option>90%</option>
                                 <option>80%</option>
                                 <option>70%</option>
@@ -99,7 +99,7 @@
                     <form class="form-inline" style="margin-top: 5px">
                         <div class="form-group">
                             <label for="auto2">CPU threshold for shrinking worker pool:</label>
-                            <select class="form-control" id="auto2" name="cpu-shrink">
+                            <select class="form-control" id="auto2" name="cpu-shrink" disabled>
                                 <option>10%</option>
                                 <option>20%</option>
                                 <option>30%</option>
@@ -111,7 +111,7 @@
                     <form class="form-inline" style="margin-top: 5px">
                         <div class="form-group">
                             <label for="auto3">Ratio by which to expand the worker pool:</label>
-                            <select class="form-control" id="auto3" name="ratio-expand">
+                            <select class="form-control" id="auto3" name="ratio-expand" disabled>
                                 <option>2</option>
                                 <option>3</option>
                                 <option>4</option>
@@ -121,7 +121,7 @@
                     <form class="form-inline" style="margin-top: 5px">
                         <div class="form-group">
                             <label for="auto4">Ratio by which to shrink the worker pool:</label>
-                            <select class="form-control" id="auto4" name="ratio-shrink">
+                            <select class="form-control" id="auto4" name="ratio-shrink" disabled>
                                 <option>2</option>
                                 <option>3</option>
                                 <option>4</option>

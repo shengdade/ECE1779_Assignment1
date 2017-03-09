@@ -1,15 +1,23 @@
 $(function () {
 
-    var manualratio = $("#manual");
-    var autoratio = $("#auto");
+    var manual = $("#manual");
+    var auto = $("#auto");
     var cpuGrow = $("#auto1");
     var cpuShrink = $("#auto2");
     var ratioExpand = $("#auto3");
     var ratioShrink = $("#auto4");
 
-    manualratio.click(function () {
-        if (autoratio.is(":checked")) {
-            autoratio.prop('checked', false);
+    manual.click(function () {
+        if (auto.is(":checked")) {
+            auto.prop('checked', false);
+            cpuGrow.attr('disabled', true);
+            cpuShrink.attr('disabled', true);
+            ratioExpand.attr('disabled', true);
+            ratioShrink.attr('disabled', true);
+            $('#sel1').attr('disabled', false);
+            $('#sel2').attr('disabled', false);
+            $('#createWorker').attr('disabled', false);
+            $('#destroyWorker').attr('disabled', false);
             $.ajax({
                 url: '/admin/setting-manually',
                 type: 'POST',
@@ -20,9 +28,17 @@ $(function () {
         }
     });
 
-    autoratio.click(function () {
-        if (manualratio.is(":checked")) {
-            manualratio.prop('checked', false);
+    auto.click(function () {
+        if (manual.is(":checked")) {
+            manual.prop('checked', false);
+            cpuGrow.attr('disabled', false);
+            cpuShrink.attr('disabled', false);
+            ratioExpand.attr('disabled', false);
+            ratioShrink.attr('disabled', false);
+            $('#sel1').attr('disabled', true);
+            $('#sel2').attr('disabled', true);
+            $('#createWorker').attr('disabled', true);
+            $('#destroyWorker').attr('disabled', true);
             $.ajax({
                 url: '/admin/setting-auto',
                 type: 'POST',
