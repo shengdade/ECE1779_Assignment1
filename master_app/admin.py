@@ -17,7 +17,7 @@ def index():
     # instances = ec2.instances.filter(
     #     Filters=[{'Name': 'instance-state-name', 'Values': ['running']}])
     instances = ec2.instances.filter(
-        Filters=[{'Name': 'tag-value', 'Values': ['a1-master', 'a1-worker']},
+        Filters=[{'Name': 'tag-value', 'Values': ['a1-primary', 'a1-worker']},
                  {'Name': 'instance-state-name', 'Values': ['running', 'pending']}])
     cpu_stats = []
     for instance in instances:
