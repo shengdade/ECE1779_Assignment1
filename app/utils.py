@@ -5,9 +5,9 @@ import boto3
 import mysql.connector
 from flask import g
 
+import config
 from app import webapp
 from app.config import db_config
-import config
 
 
 def connect_to_database():
@@ -67,3 +67,11 @@ def get_cpu_stats(instance_id):
         cpu_stats.append([time, point['Average']])
 
     return sorted(cpu_stats, key=itemgetter(0))
+
+
+def update_setting(field, value):
+    cnx = get_db()
+    cursor = cnx.cursor()
+    query = '''UPDATE setting SET ''' + field + '''=%s'''
+    cursor.execute(query, (value,))
+    cnx.commit()

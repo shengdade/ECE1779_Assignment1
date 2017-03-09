@@ -33,10 +33,12 @@
 <div class="container-fluid" style="margin-top:50px">
     <div class="row">
         <div class="col-md-3">
-            <div class="panel panel-default">
+            <div class="panel panel-default" style="margin-top: 80px">
                 <div class="panel-heading">
                     <div class="radio">
-                        <label><input type="radio" name="manual" checked>Manually setting worker pool</label>
+                        <label>
+                            <input id="manual" type="radio" name="manual" checked>Manually setting worker pool
+                        </label>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -78,7 +80,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="radio">
-                        <label><input type="radio" name="manual">Auto-scaling the worker pool</label>
+                        <label><input id="auto" type="radio" name="auto">Auto-scaling the worker pool</label>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -150,5 +152,6 @@
     }
 
 </script>
+<script src="{{ url_for('static',filename='admin.js') }}"></script>
 </body>
 </html>
