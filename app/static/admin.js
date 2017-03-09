@@ -7,6 +7,29 @@ $(function () {
     var ratioExpand = $("#auto3");
     var ratioShrink = $("#auto4");
 
+    $.ajax({
+        url: '/admin/setting',
+        type: 'GET',
+        success: function (data) {
+            if (data.autoScaling === 1) {
+                manual.prop('checked', false);
+                auto.prop('checked', true);
+                cpuGrow.attr('disabled', false);
+                cpuShrink.attr('disabled', false);
+                ratioExpand.attr('disabled', false);
+                ratioShrink.attr('disabled', false);
+                $('#sel1').attr('disabled', true);
+                $('#sel2').attr('disabled', true);
+                $('#createWorker').attr('disabled', true);
+                $('#destroyWorker').attr('disabled', true);
+            }
+            cpuGrow.val(data.cpuGrow);
+            cpuShrink.val(data.cpuShrink);
+            ratioExpand.val(data.ratioExpand);
+            ratioShrink.val(data.ratioShrink);
+        }
+    });
+
     manual.click(function () {
         if (auto.is(":checked")) {
             auto.prop('checked', false);

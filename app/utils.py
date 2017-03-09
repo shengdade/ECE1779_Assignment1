@@ -75,3 +75,12 @@ def update_setting(field, value):
     query = '''UPDATE setting SET ''' + field + '''=%s'''
     cursor.execute(query, (value,))
     cnx.commit()
+
+
+def get_setting():
+    cnx = get_db()
+    cursor = cnx.cursor()
+    query = '''SELECT * FROM setting'''
+    cursor.execute(query)
+    row = cursor.fetchone()
+    return row

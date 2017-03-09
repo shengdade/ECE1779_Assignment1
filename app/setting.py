@@ -1,7 +1,7 @@
 from flask import json, request
 
 from app import webapp
-from utils import update_setting
+from utils import update_setting, get_setting
 
 
 @webapp.route('/admin/setting-manually', methods=['POST'])
@@ -42,3 +42,15 @@ def set_ratio_shrink():
     data = request.form['data']
     update_setting("ratioShrink", int(data))
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@webapp.route('/admin/setting', methods=['GET'])
+def load_setting():
+    setting = get_setting()
+    return json.jsonify(
+        autoScaling=setting[0],
+        cpuGrow=setting[1],
+        cpuShrink=setting[2],
+        ratioExpand=setting[3],
+        ratioShrink=setting[4]
+    )
