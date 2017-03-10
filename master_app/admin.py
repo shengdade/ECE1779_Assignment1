@@ -11,7 +11,7 @@ from flask import redirect, url_for, request, render_template
 
 import config
 from master_app import master
-from utils import get_cpu_stats, get_setting
+from utils import get_cpu_stats, get_setting, get_db
 
 
 @master.route('/index', methods=['GET'])
@@ -109,6 +109,24 @@ def destroy_instances(num_destroy):
         for i in range(num_destroy):
             workers[i].terminate()
         return True
+
+
+@master.route('/admin/delete-all', methods=['POST'])
+def delete_all_images():
+    # delete all images (keep users)
+    cnx = get_db()
+    cursor = cnx.cursor()
+    query = '''DELETE FROM images;'''
+    cursor.execute(query)
+    cnx.commit()
+
+    # delete all objects of all buckets (keep bucket names)
+    s3 = boto3.resource('s3', **config.conn_args)
+    for bucket in s3.buckets.all():
+        for obj in bucket.objects.all():
+            obj.delete()
+
+    return redirect(url_for('index'))
 
 
 def mean(numbers):
