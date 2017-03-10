@@ -11,5 +11,3 @@ celery.conf.update(webapp.config)
 from app import upload
 from app import login
 from app import view
-from app import admin
-from app import setting

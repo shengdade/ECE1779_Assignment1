@@ -52,7 +52,7 @@ runcmd:
 #  - /usr/bin/redis-server --daemonize yes
 #  - echo "6. redis-server running" - `date` >> ins-logs
 #  - /home/ubuntu/ECE1779_Assignment1
-#  - cp celery.conf  /etc/supervisor/conf.d
+#  - cp celery_master.conf  /etc/supervisor/conf.d
 #  - supervisord
 #  - echo "7. supervisord running" - `date` >> ins-logs
 #  - ./run.sh

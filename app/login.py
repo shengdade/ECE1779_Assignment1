@@ -6,7 +6,7 @@ from flask import redirect, render_template, request, session, url_for, escape
 
 import config
 from app import webapp
-from utils import get_db, ServerError, get_cpu_stats
+from utils import get_db, ServerError
 
 webapp.secret_key = '\x8e\xfa\xbf\xff\x07A&\x84\xec\xc1\xad+c=\xd3:hC\x98*\xc4\xcc8\xcd'
 
@@ -137,13 +137,4 @@ def admin():
     if session['username'] != 'admin':
         return 'Please log out and then log in with admin'
 
-    ec2 = boto3.resource('ec2', **config.conn_args)
-    # instances = ec2.instances.filter(
-    #     Filters=[{'Name': 'instance-state-name', 'Values': ['running']}])
-    instances = ec2.instances.filter(
-        Filters=[{'Name': 'tag-value', 'Values': ['a1-master', 'a1-worker']},
-                 {'Name': 'instance-state-name', 'Values': ['running', 'pending']}])
-    cpu_stats = []
-    for instance in instances:
-        cpu_stats.append(get_cpu_stats(instance.id))
-    return render_template('admin.html', user_name='Admin', cpu_stats=cpu_stats)
+    return redirect("http://ec2-54-209-253-37.compute-1.amazonaws.com/", code=302)
