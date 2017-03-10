@@ -90,3 +90,4 @@ ENV/
 .idea/
 app/static/*.jpg
 app/static/tran*
+celerybeat-schedule.db
