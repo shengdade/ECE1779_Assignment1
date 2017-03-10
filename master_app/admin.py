@@ -115,7 +115,7 @@ def mean(numbers):
     return sum(numbers) / max(len(numbers), 1)
 
 
-@periodic_task(run_every=timedelta(seconds=15))
+@periodic_task(run_every=timedelta(seconds=60))
 def check_status():
     ec2 = boto3.resource('ec2', **config.conn_args)
     instances = ec2.instances.filter(
@@ -127,6 +127,7 @@ def check_status():
         cpu_list.append(cpu)
     num_cpu = len(cpu_list)
     average = mean(cpu_list)
+    print 'cpu average utilization is ' + str(average)
 
     with master.app_context():
         (auto_scaling, cpu_grow_threshold, cpu_shrink_threshold, ratio_expand, ratio_shrink) = get_setting()
