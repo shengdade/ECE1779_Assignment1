@@ -24,8 +24,6 @@ def index():
     if 'username' not in session:
         return redirect(url_for('login'))
 
-    if session['username'] == 'admin':
-        return redirect(url_for('admin'))
     else:
         username = str(session['username'])
         cnx = get_db()
@@ -47,10 +45,7 @@ def index():
 @webapp.route('/login', methods=['GET', 'POST'])
 def login():
     if 'username' in session:
-        if session['username'] == 'admin':
-            return redirect(url_for('admin'))
-        else:
-            return redirect(url_for('index'))
+        redirect(url_for('index'))
 
     error = None
     try:
@@ -62,7 +57,6 @@ def login():
             # handle admin login
             if username_form.strip() == 'admin':
                 if password_form == 'admin':
-                    session['username'] = 'admin'
                     return redirect(url_for('admin'))
                 else:
                     raise ServerError('Invalid password')
@@ -131,10 +125,4 @@ def logout():
 
 @webapp.route('/admin')
 def admin():
-    if 'username' not in session:
-        return redirect(url_for('login'))
-
-    if session['username'] != 'admin':
-        return 'Please log out and then log in with admin'
-
     return redirect("http://ec2-54-209-253-37.compute-1.amazonaws.com/", code=302)
