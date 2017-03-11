@@ -69,16 +69,16 @@
                             <form id="register-form" action="{{ url_for('register') }}" method="post"
                                   role="form" style="display: none;">
                                 <div class="form-group">
-                                    <input type="text" name="username" id="username" tabindex="1"
+                                    <input type="text" name="username" id="register-username" tabindex="1"
                                            class="form-control"
                                            placeholder="Username" value="">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="password" id="password" tabindex="2"
+                                    <input type="password" name="password" id="register-password" tabindex="2"
                                            class="form-control" placeholder="Password">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="confirm_password" id="confirm_password"
+                                    <input type="password" name="confirm_password" id="register-confirm-password"
                                            tabindex="2"
                                            class="form-control" placeholder="Confirm Password">
                                 </div>
@@ -96,7 +96,7 @@
                     </div>
                 </div>
                 <div class="panel-footer text-center">
-                    {{ error if error != None }}
+                    <p id="log-hint" class="text-warning"> {{ error if error != None }} </p>
                 </div>
             </div>
         </div>

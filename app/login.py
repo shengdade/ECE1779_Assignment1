@@ -91,7 +91,7 @@ def register():
     username_form = request.form['username']
     password_form = request.form['password']
 
-    error = None
+    error = "register successfully, please log in"
     try:
         s3 = boto3.client('s3', **config.conn_args)
         s3.create_bucket(Bucket=username_form)
