@@ -34,8 +34,8 @@ def file_upload():
     path0 = os.path.join(static_folder, 'tran0')
     new_file.save(path0)
 
-    name = new_file.filename[:-4]
-    extn = new_file.filename[-4:]
+    name, extn = new_file.filename.split('.')
+    extn = '.' + extn
     key0 = name + extn
     key1 = name + '_1' + extn
     key2 = name + '_2' + extn
@@ -141,8 +141,8 @@ def test_file_upload():
     path0 = os.path.join(static_folder, 'tran0')
     new_file.save(path0)
 
-    name = new_file.filename[:-4]
-    extn = new_file.filename[-4:]
+    name, extn = new_file.filename.split('.')
+    extn = '.' + extn
     key0 = name + extn
     key1 = name + '_1' + extn
     key2 = name + '_2' + extn

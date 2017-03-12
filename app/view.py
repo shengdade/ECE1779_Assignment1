@@ -1,8 +1,8 @@
 import boto3
 from flask import render_template, request, session, redirect, url_for, escape
 
-from app import webapp
 import config
+from app import webapp
 from utils import get_db, ServerError
 
 
@@ -15,7 +15,6 @@ def image_view():
     if 'username' not in session:
         return redirect(url_for('login'))
 
-    key = key.split('?')[0].split('/')[3]
     username = str(session['username'])
     cnx = get_db()
     cursor = cnx.cursor()
@@ -30,7 +29,7 @@ def image_view():
             raise ServerError('Invalid image key')
 
     except ServerError:
-        print 'Invalid image key'
+        print 'ServerError: Invalid image key'
         return redirect(url_for('index'))
 
     s3_cli = boto3.client('s3', **config.conn_args)
