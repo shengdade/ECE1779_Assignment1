@@ -1,4 +1,5 @@
 import os
+import tempfile
 
 import boto3
 from flask import render_template, request, session, redirect, url_for
@@ -30,10 +31,6 @@ def file_upload():
     username = str(session['username'])
     s3.create_bucket(Bucket=username)
 
-    static_folder = 'app/static'
-    path0 = os.path.join(static_folder, 'tran0')
-    new_file.save(path0)
-
     name, extn = new_file.filename.split('.')
     extn = '.' + extn
     key0 = name + extn
@@ -41,10 +38,15 @@ def file_upload():
     key2 = name + '_2' + extn
     key3 = name + '_3' + extn
 
-    upload_transformations.delay(username, path0, static_folder, key1, key2, key3)
+    with Image(file=new_file) as image:
 
-    with open(path0) as f:
-        s3.upload_fileobj(f, username, key0)
+        fd, path = tempfile.mkstemp()
+        try:
+            image.save(filename=path)
+            with os.fdopen(fd, 'r') as tmp:
+                s3.upload_fileobj(tmp, username, key0)
+        finally:
+            upload_transformations.delay(username, path, key1, key2, key3)
 
     cnx = get_db()
     cursor = cnx.cursor()
@@ -61,31 +63,33 @@ def file_upload():
 
 
 @celery.task
-def upload_transformations(username, path0, static_folder, key1, key2, key3):
+def upload_transformations(username, tmp_path, key1, key2, key3):
     print 'begin celery upload task'
     s3 = boto3.client('s3', **config.conn_args)
 
-    path1 = os.path.join(static_folder, 'tran1')
-    path2 = os.path.join(static_folder, 'tran2')
-    path3 = os.path.join(static_folder, 'tran3')
+    try:
+        img = Image(filename=tmp_path)
+        trans1 = img.clone()
+        trans2 = img.clone()
+        trans3 = img.clone()
+        trans1.rotate(180)
+        trans2.rotate(90)
+        trans3.rotate(270)
 
-    img = Image(filename=path0)
-    trans1 = img.clone()
-    trans2 = img.clone()
-    trans3 = img.clone()
-    trans1.rotate(180)
-    trans2.rotate(90)
-    trans3.rotate(270)
-    trans1.save(filename=path1)
-    trans2.save(filename=path2)
-    trans3.save(filename=path3)
+        trans1.save(filename=tmp_path)
+        with open(tmp_path) as f:
+            s3.upload_fileobj(f, username, key1)
 
-    with open(path1) as f:
-        s3.upload_fileobj(f, username, key1)
-    with open(path2) as f:
-        s3.upload_fileobj(f, username, key2)
-    with open(path3) as f:
-        s3.upload_fileobj(f, username, key3)
+        trans2.save(filename=tmp_path)
+        with open(tmp_path) as f:
+            s3.upload_fileobj(f, username, key2)
+
+        trans3.save(filename=tmp_path)
+        with open(tmp_path) as f:
+            s3.upload_fileobj(f, username, key3)
+
+    finally:
+        os.remove(tmp_path)
 
     print 'celery upload task done'
 
@@ -137,10 +141,6 @@ def test_file_upload():
     username = username_form
     s3.create_bucket(Bucket=username)
 
-    static_folder = 'app/static'
-    path0 = os.path.join(static_folder, 'tran0')
-    new_file.save(path0)
-
     name, extn = new_file.filename.split('.')
     extn = '.' + extn
     key0 = name + extn
@@ -148,10 +148,15 @@ def test_file_upload():
     key2 = name + '_2' + extn
     key3 = name + '_3' + extn
 
-    upload_transformations.delay(username, path0, static_folder, key1, key2, key3)
+    with Image(file=new_file) as image:
 
-    with open(path0) as f:
-        s3.upload_fileobj(f, username, key0)
+        fd, path = tempfile.mkstemp()
+        try:
+            image.save(filename=path)
+            with os.fdopen(fd, 'r') as tmp:
+                s3.upload_fileobj(tmp, username, key0)
+        finally:
+            upload_transformations.delay(username, path, key1, key2, key3)
 
     cnx = get_db()
     cursor = cnx.cursor()
