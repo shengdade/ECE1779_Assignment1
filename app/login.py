@@ -35,7 +35,7 @@ def index():
         s3_cli = boto3.client('s3', **config.conn_args)
         url_list = []
         for key in cursor:
-            url = s3_cli.generate_presigned_url('get_object', Params={'Bucket': username, 'Key': key[0]}, ExpiresIn=10)
+            url = s3_cli.generate_presigned_url('get_object', Params={'Bucket': username, 'Key': key[0]}, ExpiresIn=300)
             url_list.append((key[0], url))
 
         username_session = escape(session['username']).capitalize()
