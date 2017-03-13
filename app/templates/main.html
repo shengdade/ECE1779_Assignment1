@@ -10,7 +10,6 @@
     <style type="text/css">
         body {
             background: black !important;
-            padding: 30px;
         }
 
         #photos {
@@ -66,16 +65,24 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
+
+<nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
             <a class="navbar-brand" href="#">ECE1779 A1</a>
         </div>
-        <button class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#myModal">Upload Image</button>
-        <ul class="nav navbar-nav navbar-right">
-            <li><p class="navbar-text"><span class="glyphicon glyphicon-user"></span> {{ user_name }} </p></li>
-            <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-in"></span>Log out</a></li>
-        </ul>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <button class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#myModal">Upload Image</button>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a><span class="glyphicon glyphicon-user"></span> {{ user_name }} </a></li>
+                <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-in"></span> Log out </a></li>
+            </ul>
+        </div>
     </div>
 </nav>
 
@@ -106,7 +113,7 @@
 </div>
 
 
-<div style="margin-top:50px">
+<div style="padding: 10px 30px 30px;">
     <section id="photos">
         {% for key, url in image_list %}
             <form action="{{ url_for('image_view') }}" method="post">
