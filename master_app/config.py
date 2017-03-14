@@ -24,7 +24,7 @@ runcmd:
  - git pull https://shengdade:ece1779@github.com/shengdade/ECE1779_Assignment1.git
  - supervisord
  - echo "1. supervisord running" - `date` >> init-log
- - ./run.sh &
+ - ./run_worker.sh &
  - echo "2. app running" - `date` >> init-log
 """
 
