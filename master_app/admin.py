@@ -19,15 +19,32 @@ from utils import get_cpu_stats, get_setting, get_db
 # Return html with pointers to the examples
 def index():
     ec2 = boto3.resource('ec2', **config.conn_args)
-    # instances = ec2.instances.filter(
-    #     Filters=[{'Name': 'instance-state-name', 'Values': ['running']}])
-    instances = ec2.instances.filter(
-        Filters=[{'Name': 'tag-value', 'Values': ['a1-primary', 'a1-worker']},
-                 {'Name': 'instance-state-name', 'Values': ['running', 'pending']}])
+
     cpu_stats = []
+    instance_list = []
+
+    instances = ec2.instances.filter(
+        Filters=[{'Name': 'tag-value', 'Values': ['a1-master']},
+                 {'Name': 'instance-state-name', 'Values': ['running']}])
     for instance in instances:
         cpu_stats.append(get_cpu_stats(instance.id))
-    return render_template('admin.html', cpu_stats=cpu_stats)
+    instance_list.extend(list(instances))
+
+    instances = ec2.instances.filter(
+        Filters=[{'Name': 'tag-value', 'Values': ['a1-primary']},
+                 {'Name': 'instance-state-name', 'Values': ['running']}])
+    for instance in instances:
+        cpu_stats.append(get_cpu_stats(instance.id))
+    instance_list.extend(list(instances))
+
+    instances = ec2.instances.filter(
+        Filters=[{'Name': 'tag-value', 'Values': ['a1-worker']},
+                 {'Name': 'instance-state-name', 'Values': ['running', 'pending']}])
+    for instance in instances:
+        cpu_stats.append(get_cpu_stats(instance.id))
+    instance_list.extend(list(instances))
+
+    return render_template('admin.html', cpu_stats=cpu_stats, instances=instance_list)
 
 
 @master.route('/admin/create', methods=['POST'])
@@ -53,7 +70,7 @@ def create_instances(num_create):
         id_list.append(ins.id)
         id_port_list.append({'Id': ins.id, 'Port': 80})
     ec2.create_tags(Resources=id_list, Tags=[{'Key': 'Name', 'Value': 'a1-worker'}])
-    register_instance.apply_async(args=[id_list, id_port_list], countdown=60)
+    register_instance.apply_async(args=[id_list, id_port_list], countdown=20)
 
 
 @celery.task
@@ -75,7 +92,7 @@ def all_new_workers_running(id_list):
     ec2 = boto3.resource('ec2', **config.conn_args)
     for i in id_list:
         ins = ec2.Instance(i)
-        if ins.state['Name'] != 'running':
+        if ins.state['Name'] == 'pending':
             return False
     return True
 
@@ -141,8 +158,10 @@ def check_status():
                  {'Name': 'instance-state-name', 'Values': ['running']}])
     cpu_list = []
     for instance in instances:
-        cpu = get_cpu_stats(instance.id)[-1][1]
-        cpu_list.append(cpu)
+        cpu_status = get_cpu_stats(instance.id)
+        if len(cpu_status) > 0:
+            cpu = cpu_status[-1][1]
+            cpu_list.append(cpu)
     num_cpu = len(cpu_list)
     average = mean(cpu_list)
     print 'cpu average utilization is ' + str(average)
