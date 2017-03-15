@@ -3,7 +3,7 @@ db_config = {'user': 'ece1779',
              'host': '54.159.199.112',
              'database': 'ece1779_a1'}
 
-ami_id = 'ami-7478de62'
+ami_id = 'ami-a33c95b5'
 instance_type = 't2.small'
 security_group = ['a1-worker']
 key_name = 'ece1779'
