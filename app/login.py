@@ -125,4 +125,4 @@ def logout():
 
 @webapp.route('/admin')
 def admin():
-    return redirect("http://ec2-54-209-253-37.compute-1.amazonaws.com/", code=302)
+    return redirect("http://ec2-54-175-182-31.compute-1.amazonaws.com/", code=302)
