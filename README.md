@@ -3,8 +3,7 @@ ECE1779 Introduction to Cloud Computing Assignment 1
 ## Team Info
 - Dade Sheng (ID:1002229279) dade.sheng@mail.utoronto.ca
 - Siyang Zhao (ID:1002187091) kern_zhao@126.com
-## Architecture
-### Usage
+## Instructions
 #### Access Point
 - User: http://dade.ca/a1
 - Admin: http://dade.ca/a1-admin
@@ -17,6 +16,11 @@ When an image is clicked, 4 images would show:
 * 90-degree transformation
 * 180-degree transformation
 * 270-degree transformation
+#### Console Access
+- URL: https://554376045366.signin.aws.amazon.com/console
+- username: ece1779ta
+- password: ece1779ta
+## Architecture
 ### S3
 - All user images are saved on S3
 - Each user has one bucket
