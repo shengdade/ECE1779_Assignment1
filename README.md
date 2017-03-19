@@ -71,7 +71,8 @@ When an image is clicked, 4 images would show:
 2. Update settings to database if changed
 3. Handle requests for creating new workers and register new instances to load balancer
 4. Handle requests for destroying existing workers, which are then automatically removed from load balancer
-5. Execute a periodic task, check workers' status for every minute:
+5. Make sure there is at least one worker running, which is called 'primary-worker'
+6. Execute a periodic task, check workers' status for every minute:
    * Calculate average CPU utilization of workers
    * Fetch admin settings (thresholds and ratios) from database
    * If auto-scaling is on and all workers running (in case there are pending or shutting-down instances):
