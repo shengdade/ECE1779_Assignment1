@@ -10,12 +10,6 @@ ECE1779 Introduction to Cloud Computing Assignment 1
 #### Existing User
 - Username: dddaaa
 - Password: dddaaa
-#### Transformations
-When an image is clicked, 4 images would show:
-* original image
-* 90-degree transformation
-* 180-degree transformation
-* 270-degree transformation
 #### Console Access
 - URL: https://554376045366.signin.aws.amazon.com/console
 - username: ece1779ta
@@ -54,6 +48,10 @@ When an image is clicked, 4 images would show:
 - Upload images and their transformations to S3
 - Provide image links (valid for 60 seconds) to clients for display
 - There is at least one worker always running, which is called 'primary worker'
+### Transformations
+* 90-degree transformation
+* 180-degree transformation
+* 270-degree transformation
 ## Workflow
 ### Users Perspective
 #### Frond End
