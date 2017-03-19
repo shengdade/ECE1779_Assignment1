@@ -1,10 +1,10 @@
-# ECE1779_Assignment1
-ECE1779 Introduction to Cloud Computing Assignment 1
+# ECE1779-Project1
+ECE1779: Introduction to Cloud Computing
 ## Team Info
-- Dade Sheng (ID:1002229279) dade.sheng@mail.utoronto.ca
-- Siyang Zhao (ID:1002187091) kern_zhao@126.com
+- Dade Sheng _(ID:1002229279)_ dade.sheng@mail.utoronto.ca
+- Siyang Zhao _(ID:1002187091)_ kern_zhao@126.com
 ## Instructions
-#### Access Point
+#### Web Interfaces
 - User: http://dade.ca/a1
 - Admin: http://dade.ca/a1-admin
 #### Existing User
@@ -28,6 +28,10 @@ ECE1779 Introduction to Cloud Computing Assignment 1
   ssh -i ece1779.pem ubuntu@54.205.86.184
 ```
 ## Architecture
+### Transformations
+* 90-degree transformation
+* 180-degree transformation
+* 270-degree transformation
 ### S3
 - All user images are saved on S3
 - Each user has one bucket
@@ -48,10 +52,6 @@ ECE1779 Introduction to Cloud Computing Assignment 1
 - Upload images and their transformations to S3
 - Provide image links (valid for 60 seconds) to clients for display
 - There is at least one worker always running, which is called 'primary worker'
-### Transformations
-* 90-degree transformation
-* 180-degree transformation
-* 270-degree transformation
 ## Workflow
 ### Users Perspective
 #### Frond End
@@ -92,9 +92,9 @@ ECE1779 Introduction to Cloud Computing Assignment 1
       * if CPU utilization average is below shrinking threshold, destroy instances based on shrink ratio
 ## Additional Feature
 ### Asynchronous Process
-- Run background tasks using Celery distributed task queue
+- Run background tasks using [Celery distributed task queue](http://www.celeryproject.org)
 - Execute tasks which are not necessary in main thread, such as image transformations, CPU status checking
 ### Responsive Web
-- Employ Bootstrap framework for developing responsive pages
+- Employ [Bootstrap framework](http://getbootstrap.com) for developing responsive pages
 - Make web pages look good on all devices, for example, on phones
 ![Alt text](/document/responsive.jpg?raw=true "Optional Title")
