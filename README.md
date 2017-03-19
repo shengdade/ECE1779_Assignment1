@@ -41,10 +41,10 @@ When an image is clicked, 4 images would show:
 - Upload images and their transformations to S3
 - Provide image links (valid for 60 seconds) to clients for display
 ## Additional Feature
+### Asynchronous Process
+- Run background tasks using Celery distributed task queue
+- Excute tasks which are not neccessary in main thread, such as image transformations, CPU status checking
 ### Responsive Web
 - Employ Bootstrap framework for developing responsive pages
 - Make web pages look good on all devices, for example, on phones
 ![Alt text](/document/responsive.jpg?raw=true "Optional Title")
-### Asynchronous Process
-- Run background tasks using Celery distributed task queue
-- Excute tasks which are not neccessary in main thread, such as image transformations, CPU status checking
