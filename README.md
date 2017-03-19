@@ -40,9 +40,9 @@ When an image is clicked, 4 images would show:
 - Transform images uploaded by user
 - Upload images and their transformations to S3
 - Provide image links (valid for 60 seconds) to clients for display
-### Workflow
-#### Users Perspective
-##### Frond End
+## Workflow
+### Users Perspective
+#### Frond End
 1. Go to http://dade.ca/a1
 2. Create a new user if needed
 3. Log in as an existing user (e.g. dddaaa:dddaaa)
@@ -50,7 +50,7 @@ When an image is clicked, 4 images would show:
 5. Browse all images uploaded
 6. Click an image to view its transformations
 7. Log out by clicking the icon on top right corner
-##### Back End
+#### Back End
 1. Render Log-in and Register pages
 2. If register: store user account to database after input validation
 3. If log-in: validate username and password, redirect to main page if success
@@ -58,15 +58,15 @@ When an image is clicked, 4 images would show:
 5. If user uploaded an image: upload original image to S3, fire a celery background task which do transformations, upload transformations to S3, and write S3 keys to database
 6. Maintain a log-in session which expire in 5 minutes
 7. Automatically log out the user if it's idle for 5 minutes
-#### Admin Perspective
-##### Frond End
+### Admin Perspective
+#### Frond End
 1. Go to http://dade.ca/a1-admin
 2. Choose from 'Manually setting worker pool' or 'Auto-scaling the worker pool'
 3. If manually, select the number of worker to create/destroy, and click 'Create'/'Destroy' button
 4. If auto-scaling, adjust parameters (threshold or ratio), which will be saved to database once changed
 5. View CPU utilization graph and detailed statistics, such as instance state, etc.
 6. Click the button 'Delete all user images' if necessary
-##### Back End
+#### Back End
 1. Fetch admin settings (thresholds and ratios) from database and render them on admin page
 2. Update settings to database if changed
 3. Handle requests for creating new workers and register new instances to load balancer
