@@ -8,22 +8,22 @@ ECE1779 Introduction to Cloud Computing Assignment 1
 - User: http://dade.ca/a1
 - Admin: http://dade.ca/a1-admin
 #### Existing User
-- Username: dddaaa
-- Password: dddaaa
+- Username: _dddaaa_
+- Password: _dddaaa_
 #### Console Access
 - URL: https://554376045366.signin.aws.amazon.com/console
-- username: ece1779ta
-- password: ece1779ta
+- username: _ece1779ta_
+- password: _ece1779ta_
 #### Instances Access
-- Log into Master instance (description below)
+- Log into __Master__ instance _(description below)_
 ```
   ssh -i ece1779.pem ubuntu@54.175.182.31
 ```
-- Log into Database instance (description below)
+- Log into __Database__ instance _(description below)_
 ```
   ssh -i ece1779.pem ubuntu@54.159.199.112
 ```
-- Log into Primary Worker instance (description below)
+- Log into __Primary Worker__ instance _(description below)_
 ```
   ssh -i ece1779.pem ubuntu@54.205.86.184
 ```
