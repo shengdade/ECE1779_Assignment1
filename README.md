@@ -1,8 +1,10 @@
 # ECE1779-Project1
 ECE1779: Introduction to Cloud Computing
 ## Team Info
-- Dade Sheng _(ID:1002229279)_ dade.sheng@mail.utoronto.ca
-- Siyang Zhao _(ID:1002187091)_ kern_zhao@126.com
+Name | ID | Email
+------------ | ------------- | -------------
+Dade Sheng | 1002229279 | dade.sheng@mail.utoronto.ca
+Siyang Zhao | 1002187091 | kern_zhao@126.com
 ## Instructions
 #### Web Interfaces
 - User: http://dade.ca/a1
@@ -12,8 +14,8 @@ ECE1779: Introduction to Cloud Computing
 - Password: _dddaaa_
 #### Console Access
 - URL: https://554376045366.signin.aws.amazon.com/console
-- username: _ece1779ta_
-- password: _ece1779ta_
+- Username: _ece1779ta_
+- Password: _ece1779ta_
 #### Instances Access
 - Log into __Master__ instance _(description below)_
 ```
@@ -88,8 +90,8 @@ ECE1779: Introduction to Cloud Computing
    * Calculate average CPU utilization of workers
    * Fetch admin settings (thresholds and ratios) from database
    * If auto-scaling is on and all workers running (in case there are pending or shutting-down instances):
-      * if CPU utilization average is above growing threshold, create more instances based on expand ratio
-      * if CPU utilization average is below shrinking threshold, destroy instances based on shrink ratio
+      * if average CPU utilization is above growing threshold, create more instances based on expand ratio
+      * if average CPU utilization is below shrinking threshold, destroy instances based on shrink ratio
 ## Additional Feature
 ### Asynchronous Process
 - Run background tasks using [Celery distributed task queue](http://www.celeryproject.org)
