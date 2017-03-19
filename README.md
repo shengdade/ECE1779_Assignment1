@@ -20,6 +20,19 @@ When an image is clicked, 4 images would show:
 - URL: https://554376045366.signin.aws.amazon.com/console
 - username: ece1779ta
 - password: ece1779ta
+#### Instances Access
+- Log into Master instance (description below)
+```
+  ssh -i ece1779.pem ubuntu@54.175.182.31
+```
+- Log into Database instance (description below)
+```
+  ssh -i ece1779.pem ubuntu@54.159.199.112
+```
+- Log into Primary Worker instance (description below)
+```
+  ssh -i ece1779.pem ubuntu@54.205.86.184
+```
 ## Architecture
 ### S3
 - All user images are saved on S3
@@ -40,6 +53,7 @@ When an image is clicked, 4 images would show:
 - Transform images uploaded by user
 - Upload images and their transformations to S3
 - Provide image links (valid for 60 seconds) to clients for display
+- There is at least one worker always running, which is called 'primary worker'
 ## Workflow
 ### Users Perspective
 #### Frond End
