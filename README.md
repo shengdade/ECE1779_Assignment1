@@ -17,6 +17,11 @@ Siyang Zhao | 1002187091 | kern_zhao@126.com
 - Username: _ece1779ta_
 - Password: _ece1779ta_
 #### Instances Access
+- Acquire Key Pair
+```
+  wget http://www.ecf.utoronto.ca/\~shengdad/file/keypair.tar
+  tar xvf keypair.tar
+```
 - Log into __Master__ instance _(description below)_
 ```
   ssh -i ece1779.pem ubuntu@54.175.182.31
